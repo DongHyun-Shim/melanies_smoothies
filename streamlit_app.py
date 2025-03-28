@@ -18,8 +18,9 @@ st.write("The name on your smoothies will be:", name_on_order)
 
 cnx = st.connection("snowflake")   #SiS → SniS 로 바꿀때 수정. 메세지를 상세히 읽자 ㅎㅎㅎㅎ
 session = cnx.session() #SiS → SniS 로 바꿀때 수정
-my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
-#st.dataframe(data=my_dataframe, use_container_width=True)
+my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'), col('SEARCH_ON'))    #이게 여러 컬럼 셀렉트도 되는 구나..ㅋ
+st.dataframe(data=my_dataframe, use_container_width=True)
+st.stop()
 
 
 ingredients_list = st.multiselect(
