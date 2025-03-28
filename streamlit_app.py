@@ -1,6 +1,7 @@
 # Import python packages
 import streamlit as st
 import requests
+import pandas
 #from snowflake.snowpark.context import get_active_session    #SiS → SniS 로 바꿀때 수정
 from snowflake.snowpark.functions import col
 
@@ -19,9 +20,13 @@ st.write("The name on your smoothies will be:", name_on_order)
 cnx = st.connection("snowflake")   #SiS → SniS 로 바꿀때 수정. 메세지를 상세히 읽자 ㅎㅎㅎㅎ
 session = cnx.session() #SiS → SniS 로 바꿀때 수정
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'), col('SEARCH_ON'))    #이게 여러 컬럼 셀렉트도 되는 구나..ㅋ
-st.dataframe(data=my_dataframe, use_container_width=True)
-st.stop()
+#st.dataframe(data=my_dataframe, use_container_width=True)
+#st.stop()
 
+# Convert the Snowpark Dataframe to Pandas dataframe so we can use the LOC function
+pd_df = my_dataframe.to_pandas()
+st.dataframe(pd_df)
+st.stop()
 
 ingredients_list = st.multiselect(
     "Choose up to ingredients:"
